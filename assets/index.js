@@ -54,8 +54,10 @@ const parseData = async ({data}) => {
 	console.log(data)
 
 	data.forEach(dataEntry => {
-		labels.push(dataEntry.Tijdstip);
-		datasetData.push(dataEntry.Timertijdseconds);
+		if (dataEntry.Timertijd != "") {
+			labels.push(dataEntry.Tijdstip);
+			datasetData.push(dataEntry.Timertijdseconds);
+		}
 	})
 
 	chart.data.labels = labels;
@@ -64,5 +66,5 @@ const parseData = async ({data}) => {
 }
 
 function epoch_to_hh_mm_ss(epoch) {
-	return new Date(epoch*1000).toISOString().substr(12, 7)
+	return new Date(epoch*1000).toISOString().substr(11, 8)
 }
