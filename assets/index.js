@@ -56,13 +56,19 @@ const parseData = async ({data}) => {
 	data.forEach(dataEntry => {
 		if (dataEntry.Timertijd != "") {
 			labels.push(dataEntry.Tijdstip);
-			datasetData.push(dataEntry.Timertijdseconds);
+			datasetData.push(hms_to_seconds(dataEntry.Timertijd));
 		}
 	})
 
 	chart.data.labels = labels;
 	chart.data.datasets[0].data = datasetData;
 	chart.update();
+}
+
+function hms_to_seconds(hmsInput) {
+	let a = hmsInput.split(':');
+	let seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+	return seconds;
 }
 
 function epoch_to_hh_mm_ss(epoch) {
