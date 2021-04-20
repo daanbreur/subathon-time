@@ -1,6 +1,8 @@
 const ctx = document.getElementById("chart").getContext("2d");
 const errorP = document.getElementById("error");
 
+let labels = [], datasetData = [], datasetRawData = [];
+
 const chart = new Chart(ctx, {
 	type: "line",
 	data: {
@@ -45,7 +47,7 @@ const chart = new Chart(ctx, {
 			tooltip: {
 				callbacks: {
 					label: () => null,
-					footer: (tooltipItems) => seconds_to_hms(tooltipItems[0].raw) + ' uur'
+					footer: (tooltipItems) => datasetRawData[tooltipItems[0].dataIndex] + ' uur'
 				}
 			},
 			custom_canvas_background_color: {
@@ -75,12 +77,11 @@ Papa.parse("https://cdn.daanbreur.systems/Serpentgameplay_Timer.csv", {
 });
 
 const parseData = async ({data}) => {
-	let labels = [], datasetData = [];
-
 	data.forEach(dataEntry => {
 		if (dataEntry.Timertijd != "") {
 			labels.push(dataEntry.Tijdstip);
 			datasetData.push(hms_to_seconds(dataEntry.Timertijd));
+			datasetRawData.push(dataEntry.Timertijd);
 		}
 	})
 
